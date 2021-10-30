@@ -1,0 +1,162 @@
+#include<Windows.h>
+#include<stdio.h>
+#include<gl/glut.h>
+#include<math.h>
+void drawcircle(float posx, float posy, float r);
+void draw() {
+	glClearColor(0.9f, 0.5f, 0.5f, 0.5f);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glBegin(GL_QUADS);
+	glVertex2f(0, 1.5);
+	glVertex2f(1, 1.5);
+	glVertex2f(1, 0);
+	glVertex2f(0, 0);
+
+	//A rectangle  for body
+
+	glColor3f(0, 0, 0);
+	glVertex2f(0.2, 1);
+	glVertex2f(0.4, 1);
+	glVertex2f(0.4, 0.56);
+	glVertex2f(0.2, 0.56);
+
+	//A rectangle  for left leg
+
+	glColor3f(0, 0, 0);
+	glVertex2f(0.2, 0.56);
+	glVertex2f(0.26, 0.56);
+	glVertex2f(0.26, 0);
+	glVertex2f(0.2, 0);
+
+	//A rectangle  for right leg
+
+	glColor3f(0, 0, 0);
+	glVertex2f(0.34, 0.56);
+	glVertex2f(0.4, 0.56);
+	glVertex2f(0.4, 0);
+	glVertex2f(0.34, 0);
+
+	//A rectangle  for left hand
+
+	glColor3f(0, 0, 0);
+	glVertex2f(0.16, 0.96);
+	glVertex2f(0.18, 0.96);
+	glVertex2f(0.18, 0.46);
+	glVertex2f(0.16, 0.46);
+
+	//A rectangle  for right hand
+
+	glColor3f(0, 0, 0);
+	glVertex2f(0.42, 0.96);
+	glVertex2f(0.44, 0.96);
+	glVertex2f(0.44, 0.46);
+	glVertex2f(0.42, 0.46);
+
+	glEnd();
+
+	// circle for leg
+
+	glColor3f(1.0, 1.0, 1.0);
+		glBegin(GL_POLYGON);
+		for (float i = 0; i < 360;i++) {
+			float deginrad = i * 3.14 / 180;
+			glVertex2f(0.3 + 0.04014120607084343 * cos(deginrad), 0.56 + 0.04014120607084343 * sin(deginrad));
+		}
+		glEnd();
+		// big circle and TR Left shoulder
+		glColor3f(0, 0, 0);
+		glBegin(GL_POLYGON);
+		for (float i = 90; i < 180;i++) {
+			float deginrad = i * 3.14 / 180;
+			glVertex2f(0.2 + 0.0399562112532312 * cos(deginrad), 0.96 + 0.0399562112532312 * sin(deginrad));
+		}
+		glEnd();
+
+		glBegin(GL_TRIANGLES);
+		glColor3f(0, 0, 0);
+		glVertex2f(0.16, 0.96);
+		glVertex2f(0.2, 0.96);
+		glVertex2f(0.2, 1);
+		glEnd();
+
+
+
+		// Small Circle For Left shoulder
+		glColor3f(1.0, 1.0, 1.0);
+		glBegin(GL_POLYGON);
+		for (float i = 90; i < 180;i++) {
+			float deginrad = i * 3.14 / 180;
+		glVertex2f(0.2 + 0.01970225839203696 * cos(deginrad), 0.96 + 0.01970225839203696 * sin(deginrad));
+		}
+		glEnd();
+
+		glBegin(GL_TRIANGLES);
+		glColor3f(1.0, 1.0, 1.0);
+		glVertex2f(0.18, 0.96);
+		glVertex2f(0.2, 0.96);
+		glVertex2f(0.2, 0.98);
+		glEnd();
+
+		//Big Circle For Left shoulder
+
+		glColor3f(0, 0, 0);
+		glBegin(GL_POLYGON);
+		for (float i = 0; i < 90;i++) {
+			float deginrad = i * 3.14 / 180;
+			glVertex2f(0.4 + 0.03969827275174445 * cos(deginrad), 0.96 + 0.03969827275174445 * sin(deginrad));
+		}
+		glEnd();
+		glBegin(GL_TRIANGLES);
+		glColor3f(0, 0, 0);
+		glVertex2f(0.4, 1);
+		glVertex2f(0.4, 0.96);
+		glVertex2f(0.44, 0.96);
+		glEnd();
+
+		//Small Circle for right shoulder
+		glColor3f(1.0, 1.0, 1.0);
+		glBegin(GL_POLYGON);
+		for (float i = 0; i < 90;i++) {
+			float deginrad = i * 3.14 / 180;
+			glVertex2f(0.4 + 0.019957389668439466 * cos(deginrad), 0.96 + 0.019957389668439466 * sin(deginrad));
+		}
+		glEnd();
+		glBegin(GL_TRIANGLES);
+		glColor3f(1.0, 1.0, 1.0);
+		glVertex2f(0.42, 0.96);
+		glVertex2f(0.4, 0.96);
+		glVertex2f(0.4, 0.98);
+		glEnd();
+
+	glFlush();
+};
+
+	//void drawcircle(float posx, float posy, float r){
+		//glPointSize(3);
+		//glColor3f(0.5, 0, 0);
+		//glBegin(GL_POINTS);
+		//for (float i = 0; i < 360;i++) {
+			//float deginrad = i * 3.14 / 180;
+			//glVertex2f(posx + r * cos(deginrad), posy + r * sin(deginrad));
+		//}
+		//glEnd();
+		//glFlush();
+	//};
+	
+
+
+
+
+	
+
+int main(int argc, char** argv) {
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
+	glutInitWindowPosition(100, 0);
+	glutInitWindowSize(1000,1000);
+	glutCreateWindow("character");
+	glutDisplayFunc(draw);
+	//drawcircle(0.3, 0.56, 0.00004);
+	glutMainLoop();
+
+}
