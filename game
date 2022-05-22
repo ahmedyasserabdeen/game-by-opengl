@@ -1,0 +1,953 @@
+#include<Windows.h>
+#include<stdio.h>
+#include<gl/glut.h>
+#include<math.h>
+
+float movey = 0.0;
+float movex = -0.7;
+float bulletposx = 1.5;
+float bulletposy = 0;
+bool ismoving = false;
+
+// animation for first two box
+
+float movewally = -0.1;
+float movewally2 = -0.1;
+float rotatwall = 0.001;
+float rotatwall2 = 0.001;
+
+float amovewally = -0.1;
+float amovewally2 = -0.1;
+float arotatwall = 0.001;
+float arotatwall2 = 0.001;
+
+// animation for secound Quad box
+
+float quadx1 = 0.001 ;
+float quadx2 = 0.001 ;
+float quadx3 = 0.001 ;
+float quadx4 = 0.001 ;
+float quady1 = -0.02 ;
+float quady2 = -0.01 ;
+float quady3 = -0.02 ;
+float quady4 = -0.03 ;
+
+float aquadx1 = 0.001;
+float aquadx2 = 0.001;
+float aquadx3 = 0.001;
+float aquadx4 = 0.001;
+float aquady1 = 0.001;
+float aquady2 = 0.001;
+float aquady3 = 0.001;
+float aquady4 = 0.001;
+
+// animation for double wall
+
+float doubley1 = -0.02;
+float doubley2 = -0.02;
+float doublerotat1 = 0.001;
+float doublerotat2 = 0.001;
+
+//bool for arsenal
+
+bool isBox1 = true;
+bool isBox2 = true;
+bool isBox1half = true;
+bool isBox2half = true;
+bool isartillery1 = true;
+bool isartillery2 = true;
+
+//bool for wall
+
+bool isboxwall1 = true;
+bool isboxwall2 = true;
+
+bool aisboxwall1 = true;
+bool aisboxwall2 = true;
+
+bool isquadboxwall1 = true;
+bool isquadboxwall2 = true;
+bool isquadboxwall3 = true;
+bool isquadboxwall4 = true;
+
+bool aisquadboxwall1 = true;
+bool aisquadboxwall2 = true;
+bool aisquadboxwall3 = true;
+bool aisquadboxwall4 = true;
+
+float isdoubleboxwall1 = 1;
+bool isdoubleboxwall2 = true;
+
+float bulletPosXEnemy1 = 1.5;
+float bulletPosYEnemy1 = 0.3;
+bool enemyBulletIsShot1 = false;
+
+float bulletPosXEnemy2 = -1.5;
+float bulletPosYEnemy2 = -0.2;
+bool enemyBulletIsShot2 = false;
+bool isstart = true;
+bool isLost = false;
+bool isWon = false;
+
+void keyboardInput(unsigned char key, int x, int y) {
+	if (key == 13) {
+		isstart = false;
+	}
+	movey += (movey + 0.1 < 0.7 && (key == 'w' || key == 'W') ? 0.1 : 0);
+	movey -= (movey + 0.1 > -0.9 && (key == 's' || key == 'S') ? 0.1 : 0);
+	movex += (movex + 0.1 < 0.9 && (key == 'd' || key == 'D') ? 0.1 : 0);
+	movex -= (movex + 0.1 > -0.9 && (key == 'a' || key == 'A') ? 0.1 : 0);
+	if (key == 'q') {
+		isBox1 = true;
+		isBox2 = true;
+		isBox1half = true;
+		isBox2half = true;
+		isboxwall1 = true;
+		isboxwall2 = true;
+		isquadboxwall1 = true;
+		isquadboxwall2 = true;
+		isquadboxwall3 = true;
+		isquadboxwall4 = true;
+	}
+	if (key == 32) {
+		if (ismoving == false) {
+
+			ismoving = true;
+			bulletposx = movex - 0.15;
+			bulletposy = movey + 0.198;
+		}
+	}
+	if (key == 27)
+		exit(0);
+}
+void start() {
+	glColor3f(0, 0, 0);
+	glBegin(GL_QUADS);
+	glVertex2f(1, 1);
+	glVertex2f(1, -1);
+	glVertex2f(-1, -1);
+	glVertex2f(-1, 1);
+	glEnd();
+
+	glColor3f(1, 0, 0);
+	glRasterPos2f(-0.19, 0.0);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'T');
+	glRasterPos2f(-0.16, 0.0);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'O');
+	glRasterPos2f(-0.10, 0.0);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'S');
+	glRasterPos2f(-0.07, 0.0);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'T');
+	glRasterPos2f(-0.04, 0.0);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'A');
+	glRasterPos2f(-0.01,0.0);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'R');
+	glRasterPos2f(0.02, 0.0);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'T');
+	glRasterPos2f(0.06, 0.0);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'G');
+	glRasterPos2f(0.09, 0.0);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'A');
+	glRasterPos2f(0.12, 0.0);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'M');
+	glRasterPos2f(0.15, 0.0);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'E');
+	glRasterPos2f(-0.15, -0.2);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'P');
+	glRasterPos2f(-0.12 , -0.2);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'R');
+	glRasterPos2f(-0.09, -0.2);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'E');
+	glRasterPos2f(-0.06, -0.2);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'S');
+	glRasterPos2f(-0.03, -0.2);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'S');
+	glRasterPos2f(0.02, -0.2);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'E');
+	glRasterPos2f(0.05, -0.2);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'N');
+	glRasterPos2f(0.08, -0.2);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'T');
+	glRasterPos2f(0.11, -0.2);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'E');
+	glRasterPos2f(0.14, -0.2);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'R');
+
+}
+void lose() {
+	glColor3f(0, 0, 0);
+	glBegin(GL_QUADS);
+	glVertex2f(1, 1);
+	glVertex2f(1, -1);
+	glVertex2f(-1, -1);
+	glVertex2f(-1, 1);
+	glEnd();
+
+	glColor3f(1, 0, 0);
+	glRasterPos2f(-0.2, 0.0);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'G');
+	glRasterPos2f(-0.16, 0.0);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'A');
+	glRasterPos2f(-0.12, 0.0);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'M');
+	glRasterPos2f(-0.08, 0.0);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'E');
+	glRasterPos2f(-0.04, 0.0);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'O');
+	glRasterPos2f(0, 0.0);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'V');
+	glRasterPos2f(0.04, 0.0);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'E');
+	glRasterPos2f(0.08, 0.0);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'R');
+}
+void win() {
+	glColor3f(1, 1, 1);
+	glBegin(GL_QUADS);
+	glVertex2f(1, 1);
+	glVertex2f(1, -1);
+	glVertex2f(-1, -1);
+	glVertex2f(-1, 1);
+	glEnd();
+
+	glColor3f(0, 1, 0);
+	glRasterPos2f(-0.04, 0);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'W');
+	glRasterPos2f(0, 0);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'I');
+	glRasterPos2f(0.02, 0);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'N');
+}
+void bullet() {
+	glBegin(GL_LINES);
+	glLineWidth(8);
+	glColor3f(0, 0, 0);
+	glVertex2f(0.2, 0);
+	glVertex2f(0.3, 0);
+	glEnd();
+}
+void box1() {
+	glBegin(GL_QUADS);
+	glColor3f(0.72f, 0.72f, 0.72f);
+	glVertex2f(0.65, 0.15);
+	glVertex2f(0.85, 0.15);
+	glVertex2f(0.85, 0.35);
+	glVertex2f(0.65, 0.35);
+	glEnd();
+}
+void box2() {
+	glBegin(GL_QUADS);
+	glColor3f(0.72f, 0.72f, 0.72f);
+	glVertex2f(0.65, -0.15);
+	glVertex2f(0.85, -0.15);
+	glVertex2f(0.85, -0.35);
+	glVertex2f(0.65, -0.35);
+	glEnd();
+}
+void box1half() {
+	glBegin(GL_QUADS);
+	glColor3f(0.72f, 0.72f, 0.72f);
+	glVertex2f(0.75, 0.15);
+	glVertex2f(0.85, 0.15);
+	glVertex2f(0.85, 0.35);
+	glVertex2f(0.75, 0.35);
+	glEnd();
+}
+void box2half() {
+	glBegin(GL_QUADS);
+	glColor3f(0.72f, 0.72f, 0.72f);
+	glVertex2f(0.75, -0.15);
+	glVertex2f(0.85, -0.15);
+	glVertex2f(0.85, -0.35);
+	glVertex2f(0.75, -0.35);
+	glEnd();
+}
+void boxwall1() {
+	glBegin(GL_QUADS);
+	glColor3f(1, 0, 0);
+	glVertex2f(-0.05, 0.85);
+	glVertex2f(-0.05, 0.67);
+	glVertex2f(0.05, 0.67);
+	glVertex2f(0.05,0.85);
+	glEnd();
+}
+void boxwall2() {
+	glBegin(GL_QUADS);
+	glColor3f(1.0f, 0.0f, 0.0f);
+	glVertex2f(-0.05, 0.67);
+	glVertex2f(-0.05, 0.5);
+	glVertex2f(0.05, 0.5);
+	glVertex2f(0.05, 0.67);
+	glEnd();
+}
+void quadboxwall1() {
+	glBegin(GL_QUADS);
+	glColor3f(1, 0, 0);
+	glVertex2f(-0.05, 0.5);
+	glVertex2f(-0.05, 0.4);
+	glVertex2f(0.0, 0.4);
+	glVertex2f(0.0, 0.5);
+	glEnd();
+}
+void quadboxwall2() {
+	glBegin(GL_QUADS);
+	glColor3f(1, 0, 0);
+	glVertex2f(0.0, 0.5);
+	glVertex2f(0.0, 0.4);
+	glVertex2f(0.05, 0.4);
+	glVertex2f(0.05, 0.5);
+	glEnd();
+}
+void quadboxwall3() {
+	glBegin(GL_QUADS);
+	glColor3f(1, 0, 0);
+	glVertex2f(0.0, 0.4);
+	glVertex2f(0.0, 0.3);
+	glVertex2f(0.05, 0.3);
+	glVertex2f(0.05, 0.4);
+	glEnd();
+}
+void quadboxwall4() {
+	glBegin(GL_QUADS);
+	glColor3f(1, 0, 0);
+	glVertex2f(-0.05, 0.4);
+	glVertex2f(-0.05, 0.3);
+	glVertex2f(0.0, 0.3);
+	glVertex2f(0.0, 0.4);
+	glEnd();
+}
+void aquadboxwall1() {
+	glBegin(GL_QUADS);
+	glColor3f(1, 0, 0);
+	glVertex2f(0.0, -0.1);
+	glVertex2f(0.0, 0.0);
+	glVertex2f(0.05, 0.0);
+	glVertex2f(0.05, -0.1);
+	glEnd();
+}
+void aquadboxwall2() {
+	glBegin(GL_QUADS);
+	glColor3f(1, 0, 0);
+	glVertex2f(-0.05, -0.1);
+	glVertex2f(-0.05, 0.0);
+	glVertex2f(0.0, 0.0);
+	glVertex2f(0.0, -0.1);
+	glEnd();
+}
+void aquadboxwall3() {
+	glBegin(GL_QUADS);
+	glColor3f(1, 0, 0);
+	glVertex2f(0.0, -0.2);
+	glVertex2f(0.0, -0.1);
+	glVertex2f(0.05, -0.1);
+	glVertex2f(0.05, -0.2);
+	glEnd();
+}
+void aquadboxwall4() {
+	glBegin(GL_QUADS);
+	glColor3f(1, 0, 0);
+	glVertex2f(-0.05, -0.2);
+	glVertex2f(-0.05, -0.1);
+	glVertex2f(0.0, -0.1);
+	glVertex2f(0.0, -0.2);
+	glEnd();
+}
+void doubleboxwall1() {
+	glBegin(GL_QUADS);
+	glColor3f(1, 0, 0);
+	glVertex2f(-0.05, 0.3);
+	glVertex2f(-0.05, 0);
+	glVertex2f(0.0, 0);
+	glVertex2f(0.0, 0.3);
+	glEnd();
+}
+void doubleboxwall2() {
+	glBegin(GL_QUADS);
+	glColor3f(1, 0, 0);
+	glVertex2f(0.0, 0.3);
+	glVertex2f(0.0, 0);
+	glVertex2f(0.05, 0);
+	glVertex2f(0.05, 0.3);
+	glEnd();
+}
+void aboxwall1() {
+	glBegin(GL_QUADS);
+	glColor3f(1, 0, 0);
+	glVertex2f(-0.05, -0.2);
+	glVertex2f(-0.05, -0.4);
+	glVertex2f(0.05, -0.4);
+	glVertex2f(0.05, -0.2);
+	glEnd();
+}
+void aboxwall2() {
+	glBegin(GL_QUADS);
+	glColor3f(1, 0, 0);
+	glVertex2f(-0.05, -0.4);
+	glVertex2f(-0.05, -0.6);
+	glVertex2f(0.05, -0.6);
+	glVertex2f(0.05, -0.4);
+	glEnd();
+}
+void body() {
+	glBegin(GL_QUADS);
+	glColor3f(0, 0, 0);
+	glVertex2f(0.2, 1);
+	glVertex2f(0.4, 1);
+	glVertex2f(0.4, 0.56);
+	glVertex2f(0.2, 0.56);
+	glEnd();
+}
+void leftleg() {
+	glBegin(GL_QUADS);
+	glColor3f(0, 0, 0);
+	glVertex2f(0.2, 0.56);
+	glVertex2f(0.26, 0.56);
+	glVertex2f(0.26, 0);
+	glVertex2f(0.2, 0);
+	glEnd();
+}
+void rightleg() {
+	glBegin(GL_QUADS);
+	glColor3f(0, 0, 0);
+	glVertex2f(0.34, 0.56);
+	glVertex2f(0.4, 0.56);
+	glVertex2f(0.4, 0);
+	glVertex2f(0.34, 0);
+	glEnd();
+}
+void lefthand() {
+	glBegin(GL_QUADS);
+	glColor3f(0, 0, 0);
+	glVertex2f(0.16, 0.96);
+	glVertex2f(0.18, 0.96);
+	glVertex2f(0.18, 0.46);
+	glVertex2f(0.16, 0.46);
+	glEnd();
+}
+void righthand() {
+	glBegin(GL_QUADS);
+	glColor3f(0, 0, 0);
+	glVertex2f(0.4, 1);
+	glVertex2f(0.80, 1);
+	glVertex2f(0.80, 0.98);
+	glVertex2f(0.4, 0.98);
+	glEnd();
+}
+void gun() {
+	glBegin(GL_QUADS);
+	glColor3f(0, 0, 0);
+	glVertex2f(0.80, 1);
+	glVertex2f(0.90, 1);
+	glVertex2f(0.90, 0.99);
+	glVertex2f(0.80, 0.99);
+	glEnd();
+}
+void circleforleg() {
+	glColor3f(0.72f, 0.72f, 0.72f);
+	glBegin(GL_POLYGON);
+	for (float i = 0; i < 360; i++) {
+		float deginrad = i * 3.14 / 180;
+		glVertex2f(0.3 + 0.04014120607084343 * cos(deginrad), 0.56 + 0.04014120607084343 * sin(deginrad));
+	}
+	glEnd();
+}
+void shoulder() {
+	// big circle and TR Left shoulder
+	glColor3f(0, 0, 0);
+	glBegin(GL_POLYGON);
+	for (float i = 90; i < 180; i++) {
+		float deginrad = i * 3.14 / 180;
+		glVertex2f(0.2 + 0.0399562112532312 * cos(deginrad), 0.96 + 0.0399562112532312 * sin(deginrad));
+	}
+	glEnd();
+
+	glBegin(GL_TRIANGLES);
+	glColor3f(0, 0, 0);
+	glVertex2f(0.16, 0.96);
+	glVertex2f(0.2, 0.96);
+	glVertex2f(0.2, 1);
+	glEnd();
+
+
+
+	// Small Circle For Left shoulder
+	glColor3f(0.72f, 0.72f, 0.72f);
+	glBegin(GL_POLYGON);
+	for (float i = 90; i < 180; i++) {
+		float deginrad = i * 3.14 / 180;
+		glVertex2f(0.2 + 0.01970225839203696 * cos(deginrad), 0.96 + 0.01970225839203696 * sin(deginrad));
+	}
+	glEnd();
+
+	glBegin(GL_TRIANGLES);
+	glColor3f(0.72f, 0.72f, 0.72f);
+	glVertex2f(0.18, 0.96);
+	glVertex2f(0.2, 0.96);
+	glVertex2f(0.2, 0.98);
+	glEnd();
+
+	glColor3f(0.72f, 0.72f, 0.72f);
+	glBegin(GL_POLYGON);
+	for (float i = 0; i < 90; i++) {
+		float deginrad = i * 3.14 / 180;
+		glVertex2f(0.4 + 0.019957389668439466 * cos(deginrad), 0.96 + 0.019957389668439466 * sin(deginrad));
+	}
+	glEnd();
+
+	glBegin(GL_TRIANGLES);
+	glColor3f(0.72f, 0.72f, 0.72f);
+	glVertex2f(0.42, 0.96);
+	glVertex2f(0.4, 0.96);
+	glVertex2f(0.4, 0.98);
+	glEnd();
+}
+
+void head() {
+	glPointSize(3);
+	glColor3f(0, 0, 0);
+	glBegin(GL_POLYGON);
+	for (float i = 0; i < 360; i++) {
+		float deginrad = i * 3.14 / 180;
+		glVertex2f(0.3 + 0.09 * cos(deginrad), 1.09 + 0.09 * sin(deginrad));
+	}
+	glEnd();
+
+}
+void artillery1() {
+	glBegin(GL_QUADS);
+	glColor3f(0, 0, 0);
+	glVertex2f(0.65, 0.25);
+	glVertex2f(0.87, 0.25);
+	glVertex2f(0.87, 0.32);
+	glVertex2f(0.65, 0.32);
+	glEnd();
+		glPointSize(3);
+		glColor3f(0.5, 0, 0);
+		glBegin(GL_POLYGON);
+		for (float i = 0; i < 360;i++) {
+			float deginrad = i * 3.14 / 180;
+			glVertex2f(0.80 + 0.05 * cos(deginrad), 0.25 + 0.05 * sin(deginrad));
+		}
+		glEnd();
+
+
+}
+void artillery2() {
+	glBegin(GL_QUADS);
+	glColor3f(0, 0, 0);
+	glVertex2f(0.65, -0.25);
+	glVertex2f(0.87, -0.25);
+	glVertex2f(0.87, -0.17);
+	glVertex2f(0.65, -0.17);
+	glEnd();
+	glPointSize(3);
+	glColor3f(0.5, 0, 0);
+	glBegin(GL_POLYGON);
+	for (float i = 0; i < 360;i++) {
+		float deginrad = i * 3.14 / 180;
+		glVertex2f(0.80 + 0.05 * cos(deginrad), -0.25 + 0.05 * sin(deginrad));
+	}
+	glEnd();
+
+
+}
+
+
+void mainchar() {
+	head();
+	body();
+	leftleg();
+	rightleg();
+	lefthand();
+	righthand();
+	circleforleg();
+	shoulder();
+	gun();
+}
+
+void draw() {
+
+	glClearColor(0.72f, 0.72f, 0.72f, 0.0);
+	glMatrixMode(GL_MODELVIEW);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+
+	glPushMatrix();
+	glTranslatef(bulletposx, bulletposy, 0.0f);
+	bullet();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(movex, movey, 0);
+	glScalef(0.2, 0.2, 0);
+	mainchar();
+	glPopMatrix();
+
+
+	//true for draw wall
+
+	glPushMatrix();
+	if (!isquadboxwall1) {
+		quady1 -= 0.00025;
+		glTranslatef(-0.01, quady1, 0);
+		if (quadx1 <= 100) {
+			quadx1 += 0.007;
+			glRotatef(quadx1, 0.0, 0.0, 1);
+		}
+	}
+	quadboxwall1();
+	glPopMatrix();
+
+
+	glPushMatrix();
+	if (!isquadboxwall1) {
+		quady2 -= 0.00025;
+		glTranslatef(0.01, quady2, 0);
+		if (quadx2 >= -100) {
+			quadx2 -= 0.007;
+			glRotatef(quadx2, 0.0, 0.0, 1);
+		}
+	}
+	quadboxwall2();
+	glPopMatrix();
+
+	glPushMatrix();
+	if (!isquadboxwall1) {
+		quady3 -= 0.0003;
+		glTranslatef(0.01, quady3, 0);
+		if (quadx3 >= -30) {
+			quadx3 -= 0.001;
+			glRotatef(quadx3, 0.0, 0.0, 1);
+		}
+	}
+	quadboxwall3();
+	glPopMatrix();
+
+	glPushMatrix();
+	if (!isquadboxwall1) {
+		quady4 -= 0.0003;
+		glTranslatef(-0.01, quady4, 0);
+		if (quadx4 <= 30) {
+			quadx4 += 0.001;
+			glRotatef(quadx4, 0.0, 0.0, 1);
+		}
+	}
+	quadboxwall4();
+	glPopMatrix();
+
+	// A quad box wall
+
+	glPushMatrix();
+	if (!aisquadboxwall1) {
+		aquady1 -= 0.00025;
+		glTranslatef(-0.01, aquady1, 0);
+		if (aquadx1 <= 100) {
+			aquadx1 += 0.007;
+			glRotatef(aquadx1, 0.0, 0.0, 1);
+		}
+	}
+	aquadboxwall1();
+	glPopMatrix();
+
+	glPushMatrix();
+	if (!aisquadboxwall1) {
+		aquady2 -= 0.00025;
+		glTranslatef(0.01, aquady2, 0);
+		if (aquadx2 >= -100) {
+			aquadx2 -= 0.007;
+			glRotatef(aquadx2, 0.0, 0.0, 1);
+		}
+	}
+	aquadboxwall2();
+	glPopMatrix();
+
+	glPushMatrix();
+	if (!aisquadboxwall1) {
+		aquady3 -= 0.0003;
+		glTranslatef(0.01, aquady3, 0);
+		if (aquadx3 >= -30) {
+			aquadx3 -= 0.001;
+			glRotatef(aquadx3, 0.0, 0.0, 1);
+		}
+	}
+	aquadboxwall3();
+	glPopMatrix();
+
+	glPushMatrix();
+	if (!aisquadboxwall1) {
+		aquady4 -= 0.0003;
+		glTranslatef(-0.01, aquady4, 0);
+		if (aquadx4 <= 30) {
+			aquadx4 += 0.001;
+			glRotatef(quadx4, 0.0, 0.0, 1);
+		}
+	}
+	aquadboxwall4();
+	glPopMatrix();
+
+
+	glPushMatrix();
+	if (!isboxwall1) {
+		movewally -= 0.0007;
+		glTranslatef(0, movewally, 0);
+		if (rotatwall <= 45) {
+			rotatwall += 0.007;
+			glRotatef(rotatwall, 0.0, 0.0, 1);
+		}
+		
+	}
+	boxwall1();
+	glPopMatrix();
+
+	glPushMatrix();
+	if (!isboxwall2) {
+		movewally2 -= 0.0007;
+		glTranslatef(0, movewally2, 0);
+		if (rotatwall2 >= -45) {
+			rotatwall2 -= 0.007;
+			glRotatef(rotatwall2, 0.0, 0.0, 1);
+		}
+	}
+	boxwall2();
+	glPopMatrix();
+
+	glPushMatrix();
+	if (!aisboxwall1) {
+		amovewally -= 0.0007;
+		glTranslatef(0, amovewally, 0);
+		if (arotatwall <= 45) {
+			arotatwall += 0.007;
+			glRotatef(arotatwall, 0.0, 0.0, 1);
+		}
+
+	}
+	aboxwall1();
+	glPopMatrix();
+
+	glPushMatrix();
+	if (!aisboxwall2) {
+		amovewally2 -= 0.0007;
+		glTranslatef(0, amovewally2, 0);
+		if (arotatwall2 >= -45) {
+			arotatwall2 -= 0.007;
+			glRotatef(arotatwall2, 0.0, 0.0, 1);
+		}
+	}
+	aboxwall2();
+	glPopMatrix();
+
+	glPushMatrix();
+	if (isdoubleboxwall1==3) {
+		doubley1 -= 0.00025;
+		glTranslatef(-0.01, doubley1, 0);
+		if (doublerotat1 <= 100) {
+			doublerotat1 += 0.007;
+			glRotatef(doublerotat1, 0.0, 0.0, 1);
+		}
+	}
+	doubleboxwall1();
+	glPopMatrix();
+
+	glPushMatrix();
+	if (!isdoubleboxwall2) {
+		doubley2 -= 0.00025;
+		glTranslatef(0.03, doubley2, 0);
+		if (doublerotat2 >= -100) {
+			doublerotat2 -= 0.007;
+			glRotatef(doublerotat2, 0.0, 0.0, 1);
+		}
+	}
+	doubleboxwall2();
+	glPopMatrix();
+
+
+	// true for arsenal
+
+	if (isBox1 == true)
+		box1();
+	if (isBox2 == true)
+		box2();
+	if (isBox1half == true)
+		box1half();
+	if (isBox2half == true)
+		box2half();
+
+	if (isartillery1 == true)
+		artillery1();
+	if (isartillery2 == true)
+		artillery2();
+
+	glPushMatrix();
+	glTranslatef(bulletPosXEnemy1, bulletPosYEnemy1, 0.0);
+	bullet();
+	glPopMatrix();
+
+	if (isBox1half)
+		bulletPosXEnemy1 -= 0.001;
+	else
+		bulletPosXEnemy1 = 2.0;
+	if (bulletPosXEnemy1 < -1.5)
+		bulletPosXEnemy1 = 0.5;
+
+	glPushMatrix();
+	glTranslatef(bulletPosXEnemy2, bulletPosYEnemy2, 0.0);
+	bullet();
+	glPopMatrix();
+
+	if (isstart) {
+		start();
+	}
+
+	if (isBox2half)
+		bulletPosXEnemy2 -= 0.001;
+	else
+		bulletPosXEnemy2 = 2.0;
+	if (bulletPosXEnemy2 < -1.3)
+		bulletPosXEnemy2 = 0.5;
+	
+
+	/******************************************/
+
+	/******************************************/
+
+
+	if (ismoving == true) {
+		bulletposx += 0.002;
+	}
+	if (bulletposx > 1) {
+		ismoving = false;
+	}
+
+	// if for wall first two box
+
+	if ((bulletposx > -0.05 && bulletposx < 0.05 && bulletposy > 0.67 && bulletposy < 0.85) || (bulletposx > -0.05 && bulletposx < 0.05 && bulletposy > 0.5 && bulletposy < 0.67))
+	{
+		if (isboxwall1 == true && isboxwall2 == true) {
+			bulletposx = 1.4;
+		}
+
+		isboxwall1 = false;
+		isboxwall2 = false;
+	}
+
+
+	if ((bulletposx > -0.05 && bulletposx < 0.05 && bulletposy > -0.4 && bulletposy < -0.2) || (bulletposx > -0.05 && bulletposx < 0.05 && bulletposy < -0.4 && bulletposy > -0.6))
+	{
+		if (aisboxwall1 == true && aisboxwall2 == true) {
+			bulletposx = 1.4;
+		}
+
+		aisboxwall1 = false;
+		aisboxwall2 = false;
+	}
+
+
+	// if for wall secound quadboxwall
+
+	if (bulletposx > -0.05 && bulletposx < 0.05 && bulletposy > 0.3 && bulletposy < 0.5)
+	{
+		if (isquadboxwall1 == true && isquadboxwall2 == true && isquadboxwall3==true && isquadboxwall4==true)
+			bulletposx = 1.4;
+		isquadboxwall1 = false;
+		isquadboxwall2 = false;
+		isquadboxwall3 = false;
+		isquadboxwall4 = false;
+	}
+
+	// if for wall secound A quad box wall
+
+	if (bulletposx > -0.05 && bulletposx < 0.05 && bulletposy > -0.2 && bulletposy < 0.0)
+	{
+		if (aisquadboxwall1 == true && aisquadboxwall2 == true && aisquadboxwall3 == true && aisquadboxwall4 == true)
+			bulletposx = 1.4;
+		aisquadboxwall1 = false;
+		aisquadboxwall2 = false;
+		aisquadboxwall3 = false;
+		aisquadboxwall4 = false;
+	}
+
+	// if for double wall 
+	if (bulletposx > -0.05 && bulletposx < 0.0 && bulletposy < 0.3 && bulletposy > 0.0) {
+		if (isdoubleboxwall1 == 2) {
+			bulletposx = 1.4;
+			isdoubleboxwall1 ++;
+		}
+	}
+
+	if (bulletposx > -0.05 && bulletposx < 0.0 && bulletposy < 0.3 && bulletposy > 0.0 )
+	{
+		if (isdoubleboxwall1 == 1 ) {
+			bulletposx = 1.4;
+			isdoubleboxwall2 = false;
+			isdoubleboxwall1++;
+		}
+	}
+
+
+
+
+
+	// if for arsenal
+
+	if (bulletposx > 0.65 && bulletposx < 0.85 && bulletposy > 0.2 && bulletposy < 0.32)
+	{
+		if (isBox1 == true)
+			bulletposx = 1.4;
+		isBox1 = false;
+	}
+	if (bulletposx > 0.65 && bulletposx < 0.85 && bulletposy > -0.25 && bulletposy < -0.17)
+	{
+		if (isBox2 == true)
+			bulletposx = 1.4;
+		isBox2 = false;
+	}
+	if (bulletposx > 0.65 && bulletposx < 0.85 && bulletposy > 0.2 && bulletposy < 0.32)
+		isBox1half = false;
+	    
+	if (bulletposx > 0.65 && bulletposx < 0.85 && bulletposy > -0.25 && bulletposy < -0.17)
+		isBox2half = false;
+
+
+	if (isBox1 == false && isBox1half == false) {
+		isartillery1 = false;
+	}
+
+	if (isBox2 == false && isBox2half == false) {
+		isartillery2 = false;
+	}
+	//if for win
+
+	if (!isBox1 && !isBox2 && !isBox1half && !isBox2half && !isboxwall1 && !isquadboxwall1 && !isquadboxwall2 && !isquadboxwall3 && !isquadboxwall4 && !aisquadboxwall1 && !aisquadboxwall2 && !aisquadboxwall3 && !aisquadboxwall4 && isdoubleboxwall1==3 && !isdoubleboxwall2 && !aisboxwall1)
+	{
+		isWon = true;
+	}
+	
+	//if for loss
+
+	if ((bulletPosXEnemy1 < (movex - 0.1) && bulletPosXEnemy1 >(movex - 0.3) && bulletPosYEnemy1 < (movey + 0.3) && bulletPosYEnemy1 >(movey + 0.01)) || (bulletPosXEnemy2 < (movex - 0.1) && bulletPosXEnemy2 >(movex - 0.3) && bulletPosYEnemy2 < (movey + 0.29) && bulletPosYEnemy2 >(movey + 0.01)) || ((-0.3 < (movex - 0.1) && 0.3 >(movex - 0.3) && -1 < (movey + 0.3) && 1 >(movey + 0.01))))
+	{
+		isLost = true;
+	}
+
+	if (isLost)
+		lose();
+
+	if (isWon)
+		win();
+
+
+	glutPostRedisplay();
+	glFlush();
+}
+
+
+int main(int argc, char** argv) {
+	glutInit(&argc, argv);
+	glutInitWindowPosition(100, 0);
+	glutInitWindowSize(800, 800);
+	glutCreateWindow("character");
+	glutKeyboardFunc(keyboardInput);
+	glutDisplayFunc(draw);
+	glutMainLoop();
+	return 0;
+}
